@@ -24,7 +24,7 @@
     "lint:prettier": "prettier --check .",
     "fix:prettier": "prettier --write .",
     "lint:eslint": "eslint .",
-    "fix:eslint": "npm run lint:eslint --fix",
+    "fix:eslint": "eslint . --fix",
     "lint": "npm run lint:prettier && npm run lint:eslint",
     "fix": "npm run fix:prettier && npm run fix:eslint"
   },
@@ -47,7 +47,10 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^9.3.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint-plugin-react": "^7.0.0",
     "prettier": "^3.2.5"
   }
 }
