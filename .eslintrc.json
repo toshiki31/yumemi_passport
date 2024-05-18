@@ -15,5 +15,21 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "react"],
-  "rules": {}
+  "rules": {},
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "excludedFiles": ["node_modules/**"]
+    }
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    ".gitignore"
+    // 他に無視したいパターンを追加
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
