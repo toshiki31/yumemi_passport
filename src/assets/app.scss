@@ -1,0 +1,22 @@
+$colors: (
+  background: #f4f4f6,
+  black: #1a1a1a,
+  error: #f4441d,
+);
+@function colors($key) {
+  @return map-get($colors, $key);
+}
+
+.container {
+  background-color: colors(background);
+  color: colors(black);
+  height: 100vh;
+}
+
+.header {
+  color: colors(black);
+  font-size: 32px;
+  font-weight: bold;
+  padding: 16px;
+  text-align: center;
+}
