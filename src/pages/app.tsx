@@ -37,9 +37,9 @@ export default function App() {
     fetchData()
   }, [])
 
-  const handleIsChecked = (prefCode: number) => {
+  const handleIsChecked = (checkedPref: Prefecture) => {
     const newPrefectures = prefectures.map((prefecture) => {
-      if (prefecture.prefCode === prefCode) {
+      if (prefecture.prefCode === checkedPref.prefCode) {
         return {
           ...prefecture,
           isChecked: !prefecture.isChecked,
@@ -62,10 +62,14 @@ export default function App() {
     }
   }
 
-  const handleChanged = (prefCode: number) => {
-    console.log(prefCode)
-    handleIsChecked(prefCode)
-    fetchPopulationData(prefCode)
+  const handleChanged = (prefecture: Prefecture) => {
+    console.log(prefecture)
+    if (!prefecture.isChecked) {
+      handleIsChecked(prefecture)
+      fetchPopulationData(prefecture.prefCode)
+    } else {
+      handleIsChecked(prefecture)
+    }
   }
 
   return (
@@ -78,13 +82,10 @@ export default function App() {
             <input
               id={prefecture.prefName}
               checked={prefecture.isChecked}
-              onChange={() => handleChanged(prefecture.prefCode)}
+              onChange={() => handleChanged(prefecture)}
               type="checkbox"
             />
-            <label htmlFor={prefecture.prefName}>
-              {prefecture.prefName}
-              {prefecture.isChecked ? 'checked' : 'not checked'}
-            </label>
+            <label htmlFor={prefecture.prefName}>{prefecture.prefName}</label>
           </div>
         ))}
       </div>
