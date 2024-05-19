@@ -4,6 +4,7 @@ import '../assets/app.scss'
 import { Header } from '../components/header'
 import { getPrefectures } from '../services/apis/getPrefectures'
 import { getPopulation } from '../services/apis/getPopulation'
+import { LineGraph } from '../components/lineGraph'
 
 interface Prefecture {
   prefCode: number
@@ -11,8 +12,17 @@ interface Prefecture {
   isChecked: boolean
 }
 
+interface Population {
+  name: string
+  popData: {
+    year: number
+    value: number
+  }[]
+}
+
 export default function App() {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
+  const [populations, setPopulation] = useState<Population[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,10 +60,23 @@ export default function App() {
     setPrefectures(newPrefectures)
   }
 
-  const fetchPopulationData = async (prefCode: number) => {
+  const fetchPopulationData = async (checkedPref: Prefecture) => {
     try {
-      const populationData = await getPopulation(prefCode)
+      const responseData = await getPopulation(checkedPref.prefCode)
+      console.log(responseData)
+
+      // データ整形処理
+      {
+        /** todo: 他の人口との切り替え処理 */
+      }
+      const populationData = responseData.result.data[0].data
       console.log(populationData)
+      const newPopulation: Population = {
+        name: checkedPref.prefName,
+        popData: populationData,
+      }
+      console.log(newPopulation)
+      setPopulation([...populations, newPopulation])
     } catch (error) {
       console.error(
         'Error fetching population from the checked prefecture:',
@@ -66,16 +89,19 @@ export default function App() {
     console.log(prefecture)
     if (!prefecture.isChecked) {
       handleIsChecked(prefecture)
-      fetchPopulationData(prefecture.prefCode)
+      fetchPopulationData(prefecture)
     } else {
       handleIsChecked(prefecture)
+      {
+        /* todo: populationからデータを外す処理 */
+      }
     }
   }
 
   return (
     <div className="container">
       <Header />
-      <div className="title">都道府県一覧</div>
+      <h2 className="title">都道府県一覧</h2>
       <div className="checkbox">
         {prefectures.map((prefecture) => (
           <div className="child_checkbox" key={prefecture.prefCode}>
@@ -88,6 +114,10 @@ export default function App() {
             <label htmlFor={prefecture.prefName}>{prefecture.prefName}</label>
           </div>
         ))}
+      </div>
+      <div>
+        <h2 className="title">人口推移</h2>
+        <LineGraph props={populations} />
       </div>
     </div>
   )
