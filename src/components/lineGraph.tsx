@@ -60,14 +60,14 @@ export const LineGraph = (props: {
     <LineChart
       className="graph"
       data={processedData}
-      height={displayWidth * 0.32}
-      width={displayWidth * 0.8}
+      height={displayWidth * 0.4}
+      width={displayWidth * 0.9}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="year" />
-      <YAxis />
+      <XAxis dataKey="year" tick={{ fontSize: 12 }} />
+      <YAxis tick={{ fontSize: 12 }} />
       <Tooltip />
-      <Legend />
+      <Legend verticalAlign="top" />
       {populations.map((pref) => (
         <Line
           key={pref.name}
@@ -80,3 +80,5 @@ export const LineGraph = (props: {
     </LineChart>
   )
 }
+
+export default LineGraph

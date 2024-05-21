@@ -37,3 +37,5 @@ export const Accordion = (prop: {
     </div>
   )
 }
+
+export default Accordion
