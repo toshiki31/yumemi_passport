@@ -31,20 +31,18 @@ export const LineGraph = (props: {
 }) => {
   const populations = props.info.population
   const displayWidth = props.info.displayWidth
-  console.log(populations)
-
   const processPopulationData = (populations: Population[]) => {
     const result: ResultData[] = []
     const years = new Set<number>()
 
-    // 年度のセットを作成
+    /** 年度のセットを作成 */
     populations.forEach((population) => {
       population.popData.forEach((data) => {
         years.add(data.year)
       })
     })
 
-    // 年度ごとに人口データをまとめる
+    /** 年度ごとに人口データをまとめる */
     years.forEach((year) => {
       const obj: ResultData = { year }
       populations.forEach((population) => {
@@ -57,7 +55,6 @@ export const LineGraph = (props: {
   }
 
   const processedData = processPopulationData(populations)
-  console.log('processData', processedData)
 
   return (
     <LineChart
