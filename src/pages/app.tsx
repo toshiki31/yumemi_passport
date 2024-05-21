@@ -92,9 +92,15 @@ export default function App() {
       fetchPopulationData(prefecture)
     } else {
       handleIsChecked(prefecture)
-      {
-        /* todo: populationからデータを外す処理 */
+      /** チェックを外す処理 */
+      const deletePrefecture = populations.findIndex(
+        (population) => population.name === prefecture.prefName
+      )
+      if (deletePrefecture === -1) {
+        return
       }
+      populations.splice(deletePrefecture, 1)
+      setPopulation([...populations])
     }
   }
 
