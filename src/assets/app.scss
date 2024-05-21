@@ -1,6 +1,7 @@
 :root {
   --background: #f4f4f6;
   --black: #1a1a1a;
+  --white: #ffffff;
   --error: #f4441d;
   --font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
   --title: 32px;
@@ -53,4 +54,10 @@ input[type='checkbox'] {
   width: 20px;
   height: 20px;
   margin-right: 12px;
+}
+
+.graph {
+  background-color: var(--white);
+  margin: auto;
+  padding: 32px;
 }

@@ -23,6 +23,7 @@ interface Population {
 export default function App() {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
   const [populations, setPopulation] = useState<Population[]>([])
+  const [displayWidth, setDisplayWidth] = useState<number>(window.innerWidth)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +46,7 @@ export default function App() {
       }
     }
     fetchData()
+    setDisplayWidth(window.innerWidth)
   }, [])
 
   const handleIsChecked = (checkedPref: Prefecture) => {
@@ -121,9 +123,11 @@ export default function App() {
           </div>
         ))}
       </div>
-      <div>
+      <div className="population">
         <h2 className="title">人口推移</h2>
-        <LineGraph props={populations} />
+        <LineGraph
+          info={{ population: populations, displayWidth: displayWidth }}
+        />
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import '../assets/app.scss'
 
 interface Population {
   name: string
@@ -22,8 +23,14 @@ interface ResultData {
   [key: string]: number | null
 }
 
-export const LineGraph = (props: { props: Population[] }) => {
-  const populations = props.props
+export const LineGraph = (props: {
+  info: {
+    population: Population[]
+    displayWidth: number
+  }
+}) => {
+  const populations = props.info.population
+  const displayWidth = props.info.displayWidth
   console.log(populations)
 
   const processPopulationData = (populations: Population[]) => {
@@ -54,10 +61,10 @@ export const LineGraph = (props: { props: Population[] }) => {
 
   return (
     <LineChart
-      width={800}
-      height={400}
+      className="graph"
       data={processedData}
-      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+      height={displayWidth * 0.32}
+      width={displayWidth * 0.8}
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="year" />
