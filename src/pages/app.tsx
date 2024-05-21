@@ -5,6 +5,7 @@ import { Header } from '../components/header'
 import { getPrefectures } from '../services/apis/getPrefectures'
 import { getPopulation } from '../services/apis/getPopulation'
 import { LineGraph } from '../components/lineGraph'
+import { Accordion } from '../components/accordion'
 
 interface Prefecture {
   prefCode: number
@@ -109,7 +110,7 @@ export default function App() {
   return (
     <div className="container">
       <Header />
-      <h2 className="title">都道府県一覧</h2>
+      <h2>都道府県一覧</h2>
       <div className="checkbox">
         {prefectures.map((prefecture) => (
           <div className="child_checkbox" key={prefecture.prefCode}>
@@ -119,12 +120,16 @@ export default function App() {
               onChange={() => handleChanged(prefecture)}
               type="checkbox"
             />
-            <label htmlFor={prefecture.prefName}>{prefecture.prefName}</label>
+
+            <label htmlFor={prefecture.prefName} className="custom_checkbox">
+              {prefecture.prefName}
+            </label>
           </div>
         ))}
       </div>
       <div className="population">
-        <h2 className="title">人口推移</h2>
+        <h2>人口推移</h2>
+        <Accordion />
         <LineGraph
           info={{ population: populations, displayWidth: displayWidth }}
         />

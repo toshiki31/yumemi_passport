@@ -2,7 +2,12 @@
   --background: #f4f4f6;
   --black: #1a1a1a;
   --white: #ffffff;
+  --border: #ccc;
   --error: #f4441d;
+  --primary: #40a578;
+  --secondary: #9dde8b;
+  --dark: #006769;
+  --light: #e6ff94;
   --font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
   --title: 32px;
   --text: 16px;
@@ -15,7 +20,7 @@
 .container {
   background-color: var(--background);
   color: var(--black);
-  height: 100vh;
+  height: 100%;
   padding: 32px;
 }
 
@@ -27,7 +32,7 @@
   text-align: center;
 }
 
-.title {
+h2 {
   font-size: var(--title);
   font-weight: bold;
 }
@@ -44,20 +49,118 @@
   font-size: var(--text);
   gap: 8px;
 }
-
 .child_checkbox {
   display: flex;
   align-items: center;
 }
 
 input[type='checkbox'] {
+  display: none;
+}
+.custom_checkbox {
+  position: relative;
+  padding: 5px 30px;
+  cursor: pointer;
+}
+.custom_checkbox:before {
   width: 20px;
   height: 20px;
-  margin-right: 12px;
+  left: 5px;
+  border: 1px solid var(--border);
+  margin-top: -10px;
+}
+.custom_checkbox:after,
+.custom_checkbox:before {
+  position: absolute;
+  content: '';
+  top: 50%;
+}
+.custom_checkbox::after {
+  position: absolute;
+  width: 7px;
+  height: 12px;
+  top: 45%;
+  left: 11px;
+  border-right: 2px solid var(--primary); /* 細いチェックマーク部分 */
+  border-bottom: 4px solid var(--primary); /* 太いチェックマーク部分 */
+  content: '';
+  margin-top: -7px;
+  opacity: 0;
+  transform: rotate(45deg);
+}
+input[type='checkbox']:checked + .custom_checkbox::after {
+  opacity: 1;
 }
 
 .graph {
   background-color: var(--white);
   margin: auto;
   padding: 32px;
+}
+
+.accordion_container {
+  border: 1px solid var(--border);
+  width: 300px;
+  margin: 20px auto;
+  font-family: var(--font-family);
+}
+.accordion_summary {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  padding: 10px;
+  user-select: none;
+}
+.accordion_text {
+  flex-grow: 1;
+}
+/* アイコン */
+.accordion_icon {
+  display: block;
+  float: right;
+  position: relative;
+  width: 24px;
+  margin: auto auto auto 6px;
+  flex-shrink: 0;
+  transform-origin: center 43%;
+}
+.accordion_icon::before,
+.accordion_icon::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 15px;
+  height: 3px;
+  background-color: var(--primary);
+}
+.accordion_icon::before {
+  left: 0;
+  transform: rotate(45deg);
+}
+.accordion_icon::after {
+  right: 0;
+  transform: rotate(-45deg);
+}
+/* アコーディオンが開いた時のスタイル */
+.accordion_icon.open::before {
+  left: 0;
+  transform: rotate(-45deg);
+}
+.accordion_icon.open::after {
+  right: 0;
+  transform: rotate(45deg);
+}
+
+.accordion_details {
+  background-color: var(--white);
+  border-top: 1px solid var(--border);
+}
+.accordion_item {
+  cursor: pointer;
+  padding: 10px;
+  user-select: none;
+}
+.accordion_item:hover {
+  background-color: var(--border);
 }
