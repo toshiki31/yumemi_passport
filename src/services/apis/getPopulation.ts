@@ -19,10 +19,7 @@ export const getPopulation = async (prefCode: number) => {
     const data = response.data
     return data
   } catch (error) {
-    console.error(
-      'Error fetching population from the checked prefecture:',
-      error
-    )
+    alert('データの取得に失敗しました')
     throw error
   }
 }

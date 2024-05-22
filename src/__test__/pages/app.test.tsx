@@ -42,6 +42,18 @@ test('fetches and displays prefectures', async () => {
 {
   /* todo: エラー時のテスト */
 }
+test('does not display prefectures when an error occurs', async () => {
+  mockGetPrefectures.mockRejectedValue(new Error('Error fetching prefectures'))
+  const alertMock = jest.spyOn(window, 'alert').mockImplementation()
+
+  render(<App />)
+  await waitFor(() => {
+    expect(alertMock).toHaveBeenCalledWith('データの取得に失敗しました')
+
+    expect(screen.queryByText('北海道')).not.toBeInTheDocument()
+    expect(screen.queryByText('青森県')).not.toBeInTheDocument()
+  })
+})
 
 test('renders checkboxes', async () => {
   const mockPrefectures = {
@@ -85,5 +97,17 @@ test('renders checkboxes', async () => {
 
     fireEvent.click(aomoriCheckbox)
     expect(aomoriCheckbox.checked).toBe(false)
+  })
+})
+
+test('does not fetches and displays population data', async () => {
+  mockGetPrefectures.mockRejectedValue(new Error('Error fetching prefectures'))
+  const alertMock = jest.spyOn(window, 'alert').mockImplementation()
+
+  render(<App />)
+  await waitFor(() => {
+    expect(alertMock).toHaveBeenCalledWith(
+      'チェックされた県のデータ取得に失敗しました'
+    )
   })
 })

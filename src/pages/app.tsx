@@ -45,7 +45,7 @@ export default function App() {
           throw new Error('Invalid data format')
         }
       } catch (error) {
-        console.error('Error fetching prefectures:', error)
+        alert('データの取得に失敗しました')
       }
     }
     fetchData()
@@ -73,10 +73,7 @@ export default function App() {
           }
           newPopulations.push(newPopulation)
         } catch (error) {
-          console.error(
-            'Error fetching population from the checked prefecture:',
-            error
-          )
+          alert('チェックされた県のデータ取得に失敗しました')
         }
       }
       setPopulation(newPopulations)
