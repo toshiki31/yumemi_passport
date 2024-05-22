@@ -1,12 +1,17 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import '../assets/app.scss'
 import { Header } from '../components/header'
 import { getPrefectures } from '../services/apis/getPrefectures'
 import { getPopulation } from '../services/apis/getPopulation'
 import { LineGraph } from '../components/lineGraph'
 import { Accordion } from '../components/accordion'
-
+import { Checkboxes } from '../components/checkboxes'
+import { LabelContext, SetLabelContext } from '../contexts/labelContext'
+import {
+  PrefecturesContext,
+  SetPrefecturesContext,
+} from '../contexts/prefectureContext'
 interface Prefecture {
   prefCode: number
   prefName: string
@@ -22,10 +27,12 @@ interface Population {
 }
 
 export default function App() {
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
   const [populations, setPopulation] = useState<Population[]>([])
-  const [label, setLabel] = useState<string>('総人口')
   const [displayWidth, setDisplayWidth] = useState<number>(window.innerWidth)
+  const label = useContext(LabelContext)
+  const setLabel = useContext(SetLabelContext)
+  const prefectures = useContext(PrefecturesContext)
+  const setPrefectures = useContext(SetPrefecturesContext)
 
   /** 初回レンダリング時 */
   useEffect(() => {
@@ -40,6 +47,7 @@ export default function App() {
               isChecked: false,
             })
           )
+          console.log(initialPrefectures)
           setPrefectures(initialPrefectures)
         } else {
           throw new Error('Invalid data format')
@@ -85,59 +93,11 @@ export default function App() {
   const handleSelect = (label: string) => {
     setLabel(label)
   }
-
-  /** チェックボックスのチェックを変更する */
-  const handleIsChecked = (checkedPref: Prefecture) => {
-    const newPrefectures = prefectures.map((prefecture) => {
-      if (prefecture.prefCode === checkedPref.prefCode) {
-        return {
-          ...prefecture,
-          isChecked: !prefecture.isChecked,
-        }
-      }
-      return prefecture
-    })
-    setPrefectures(newPrefectures)
-  }
-
-  /** チェックボタンを押した時の処理全体 */
-  const handleChanged = (prefecture: Prefecture) => {
-    if (!prefecture.isChecked) {
-      handleIsChecked(prefecture)
-    } else {
-      handleIsChecked(prefecture)
-      /** チェックを外す処理 */
-      const deletePrefecture = populations.findIndex(
-        (population) => population.name === prefecture.prefName
-      )
-      if (deletePrefecture === -1) {
-        return
-      }
-      populations.splice(deletePrefecture, 1)
-      setPopulation([...populations])
-    }
-  }
-
   return (
     <div className="container">
       <Header />
       <h2>都道府県一覧</h2>
-      <div className="checkbox">
-        {prefectures.map((prefecture) => (
-          <div className="child_checkbox" key={prefecture.prefCode}>
-            <input
-              id={prefecture.prefName}
-              checked={prefecture.isChecked}
-              onChange={() => handleChanged(prefecture)}
-              type="checkbox"
-            />
-
-            <label htmlFor={prefecture.prefName} className="custom_checkbox">
-              {prefecture.prefName}
-            </label>
-          </div>
-        ))}
-      </div>
+      <Checkboxes />
       <div className="population">
         <h2>人口推移</h2>
         <Accordion props={{ selectItem: label, handleSelect: handleSelect }} />
