@@ -3,35 +3,16 @@ import { useEffect, useState, useContext } from 'react'
 import '../assets/app.scss'
 import { Header } from '../components/header'
 import { getPrefectures } from '../services/apis/getPrefectures'
-import { getPopulation } from '../services/apis/getPopulation'
 import { LineGraph } from '../components/lineGraph'
 import { Accordion } from '../components/accordion'
 import { Checkboxes } from '../components/checkboxes'
-import { LabelContext, SetLabelContext } from '../contexts/labelContext'
-import {
-  PrefecturesContext,
-  SetPrefecturesContext,
-} from '../contexts/prefectureContext'
-interface Prefecture {
-  prefCode: number
-  prefName: string
-  isChecked: boolean
-}
-
-interface Population {
-  name: string
-  popData: {
-    year: number
-    value: number
-  }[]
-}
+import { SetPrefecturesContext } from '../contexts/prefectureContext'
+import { PopulationContext } from '../contexts/populationContext'
+import { Prefecture } from '../models/model'
 
 export default function App() {
-  const [populations, setPopulation] = useState<Population[]>([])
+  const populations = useContext(PopulationContext)
   const [displayWidth, setDisplayWidth] = useState<number>(window.innerWidth)
-  const label = useContext(LabelContext)
-  const setLabel = useContext(SetLabelContext)
-  const prefectures = useContext(PrefecturesContext)
   const setPrefectures = useContext(SetPrefecturesContext)
 
   /** 初回レンダリング時 */
@@ -60,39 +41,6 @@ export default function App() {
     setDisplayWidth(window.innerWidth)
   }, [])
 
-  /** ラベルと一致したデータをフェッチする  */
-  useEffect(() => {
-    const fetchPopulationData = async () => {
-      /** チェックがついていた県はつけたままにする */
-      const checkedPrefectures = prefectures.filter((pref) => pref.isChecked)
-      const newPopulations: Population[] = []
-
-      /** ラベルと同じ名前のデータを取得 */
-      for (const checkedPref of checkedPrefectures) {
-        try {
-          const responseData = await getPopulation(checkedPref.prefCode)
-          const populationData = responseData.result.data.find(
-            (item: { label: string }) => item.label === label
-          )?.data
-
-          const newPopulation: Population = {
-            name: checkedPref.prefName,
-            popData: populationData,
-          }
-          newPopulations.push(newPopulation)
-        } catch (error) {
-          alert('チェックされた県のデータ取得に失敗しました')
-        }
-      }
-      setPopulation(newPopulations)
-    }
-    fetchPopulationData()
-  }, [label, prefectures])
-
-  /** ラベル変更時 */
-  const handleSelect = (label: string) => {
-    setLabel(label)
-  }
   return (
     <div className="container">
       <Header />
@@ -100,7 +48,7 @@ export default function App() {
       <Checkboxes />
       <div className="population">
         <h2>人口推移</h2>
-        <Accordion props={{ selectItem: label, handleSelect: handleSelect }} />
+        <Accordion />
         <LineGraph
           info={{ population: populations, displayWidth: displayWidth }}
         />

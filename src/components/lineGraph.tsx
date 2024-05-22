@@ -9,19 +9,7 @@ import {
   YAxis,
 } from 'recharts'
 import '../assets/app.scss'
-
-interface Population {
-  name: string
-  popData: {
-    year: number
-    value: number
-  }[]
-}
-
-interface ResultData {
-  year: number
-  [key: string]: number | null
-}
+import { Population, ResultData } from '../models/model'
 
 export const LineGraph = (props: {
   info: {

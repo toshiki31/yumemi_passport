@@ -1,30 +1,23 @@
 import React from 'react'
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext } from 'react'
 import { LabelContext } from '../contexts/labelContext'
 import {
   PrefecturesContext,
   SetPrefecturesContext,
 } from '../contexts/prefectureContext'
-
+import {
+  PopulationContext,
+  SetPopulationContext,
+} from '../contexts/populationContext'
 import { getPopulation } from '../services/apis/getPopulation'
-interface Prefecture {
-  prefCode: number
-  prefName: string
-  isChecked: boolean
-}
-interface Population {
-  name: string
-  popData: {
-    year: number
-    value: number
-  }[]
-}
+import { Prefecture, Population } from '../models/model'
 
 export const Checkboxes = () => {
   const label = useContext(LabelContext)
   const prefectures = useContext(PrefecturesContext)
   const setPrefectures = useContext(SetPrefecturesContext)
-  const [populations, setPopulation] = useState<Population[]>([])
+  const populations = useContext(PopulationContext)
+  const setPopulation = useContext(SetPopulationContext)
 
   /** ラベルと一致したデータをフェッチする  */
   useEffect(() => {
@@ -53,7 +46,8 @@ export const Checkboxes = () => {
       setPopulation(newPopulations)
     }
     fetchPopulationData()
-  }, [label, prefectures])
+  }, [prefectures])
+
   /** チェックボックスのチェックを変更する */
   const handleIsChecked = (checkedPref: Prefecture) => {
     const newPrefectures = prefectures.map((prefecture) => {

@@ -5,13 +5,16 @@ import App from './pages/app'
 import reportWebVitals from './reportWebVitals'
 import { PrefecturesProvider } from './contexts/prefectureContext'
 import { LabelProvider } from './contexts/labelContext'
+import { PopulationProvider } from './contexts/populationContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <PrefecturesProvider>
       <LabelProvider>
-        <App />
+        <PopulationProvider>
+          <App />
+        </PopulationProvider>
       </LabelProvider>
     </PrefecturesProvider>
   </React.StrictMode>
