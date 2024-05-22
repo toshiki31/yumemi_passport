@@ -12,7 +12,10 @@ import { Prefecture } from '../models/model'
 
 export default function App() {
   const populations = useContext(PopulationContext)
-  const [displayWidth, setDisplayWidth] = useState<number>(window.innerWidth)
+  const [displayWidth, setDisplayWidth] = useState<number>(
+    document.documentElement.clientWidth
+  )
+  const scrollHeight = document.documentElement.scrollHeight
   const setPrefectures = useContext(SetPrefecturesContext)
 
   /** 初回レンダリング時 */
@@ -38,11 +41,11 @@ export default function App() {
       }
     }
     fetchData()
-    setDisplayWidth(window.innerWidth)
+    setDisplayWidth(document.documentElement.clientWidth)
   }, [])
 
   return (
-    <div className="container">
+    <div className="container" style={{ height: scrollHeight }}>
       <Header />
       <h2>都道府県一覧</h2>
       <Checkboxes />
