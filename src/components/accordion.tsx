@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useEffect, useContext } from 'react'
 import '../assets/app.scss'
 import { getPopulation } from '../services/apis/getPopulation'
-import { LabelContext, SetLabelContext } from '../contexts/labelContext'
+import { LabelContext } from '../contexts/labelContext'
 import { PrefecturesContext } from '../contexts/prefectureContext'
 import { SetPopulationContext } from '../contexts/populationContext'
 import { Population } from '../models/model'
+import { useAccordion } from '../hooks/useAccordion'
 
 export const Accordion = () => {
   const setPopulation = useContext(SetPopulationContext)
   const label = useContext(LabelContext)
-  const setLabel = useContext(SetLabelContext)
   const prefectures = useContext(PrefecturesContext)
-  const [isOpen, setIsOpen] = useState(false)
   const selectList = ['総人口', '年少人口', '生産年齢人口', '老年人口']
+  const { isOpen, handleLabelChange, toggleAction } = useAccordion()
 
   /** ラベルと一致したデータをフェッチする  */
   useEffect(() => {
@@ -44,15 +44,9 @@ export const Accordion = () => {
     fetchPopulationData()
   }, [label])
 
-  /** ラベル変更時 */
-  const handleLabelChange = (selected: string) => {
-    setLabel(selected)
-    setIsOpen(false)
-  }
-
   return (
     <div className="accordion_container">
-      <div className="accordion_summary" onClick={() => setIsOpen(!isOpen)}>
+      <div className="accordion_summary" onClick={toggleAction}>
         <span className="accordion_text">{label}</span>
         <span className={`accordion_icon ${isOpen ? 'open' : ''}`}></span>
       </div>

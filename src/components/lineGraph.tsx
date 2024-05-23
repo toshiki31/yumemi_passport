@@ -22,6 +22,7 @@ export const LineGraph = (props: {
   const [processedData, setProcessedData] = useState<ResultData[]>([])
   const populations = props.info.population
   const displayWidth = props.info.displayWidth
+  const strokeColor = useStrokeColor()
 
   useEffect(() => {
     const processPopulationData = (populations: Population[]) => {
@@ -81,7 +82,7 @@ export const LineGraph = (props: {
               type="monotone"
               dataKey={pref.name}
               name={pref.name}
-              stroke={useStrokeColor(index)}
+              stroke={strokeColor(index)}
             />
           ))}
         </LineChart>
