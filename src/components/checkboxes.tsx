@@ -95,3 +95,5 @@ export const Checkboxes = () => {
     </div>
   )
 }
+
+export default Checkboxes

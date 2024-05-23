@@ -10,6 +10,7 @@ import {
 } from 'recharts'
 import '../assets/app.scss'
 import { Population, ResultData } from '../models/model'
+import { useStrokeColor } from '../hooks/useStrokeColor'
 
 export const LineGraph = (props: {
   info: {
@@ -53,12 +54,6 @@ export const LineGraph = (props: {
     }
   }, [populations])
 
-  const strokeColor = (index: number) => {
-    const baseColor = parseInt('006796', 16)
-    const newColor = baseColor + index * 1000
-    return `#${newColor.toString(16).padStart(6, '0')}`
-  }
-
   return (
     <>
       {isLoading ? (
@@ -86,7 +81,7 @@ export const LineGraph = (props: {
               type="monotone"
               dataKey={pref.name}
               name={pref.name}
-              stroke={strokeColor(index)}
+              stroke={useStrokeColor(index)}
             />
           ))}
         </LineChart>
