@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './pages/app'
 import reportWebVitals from './reportWebVitals'
+import { PrefecturesProvider } from './contexts/prefectureContext'
+import { LabelProvider } from './contexts/labelContext'
+import { PopulationProvider } from './contexts/populationContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <App />
+    <PrefecturesProvider>
+      <LabelProvider>
+        <PopulationProvider>
+          <App />
+        </PopulationProvider>
+      </LabelProvider>
+    </PrefecturesProvider>
   </React.StrictMode>
 )
 

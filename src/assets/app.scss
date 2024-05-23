@@ -20,7 +20,6 @@
 .container {
   background-color: var(--background);
   color: var(--black);
-  height: 100%;
   padding: 32px;
 }
 
@@ -93,6 +92,7 @@ input[type='checkbox']:checked + .custom_checkbox::after {
 .graph {
   background-color: var(--white);
   margin: auto;
+  display: grid;
 }
 .graph_text {
   font-size: var(--sm);
@@ -163,4 +163,38 @@ input[type='checkbox']:checked + .custom_checkbox::after {
 }
 .accordion_item:hover {
   background-color: var(--border);
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  display: inline-grid;
+  position: relative;
+  margin: auto;
+}
+.loader::before,
+.loader::after {
+  content: '';
+  grid-area: 1/1;
+  color: var(--primary);
+  --c: radial-gradient(farthest-side, currentColor, 95%, #0000);
+  background:
+    var(--c) top,
+    var(--c) bottom,
+    var(--c) left,
+    var(--c) right;
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+  animation: s3 1s infinite;
+}
+.loader::before {
+  margin: 4px;
+  color: var(--secondary);
+  background-size: 16px 16px;
+  animation-timing-function: linear;
+}
+@keyframes s3 {
+  100% {
+    transform: rotate(0.5turn);
+  }
 }
