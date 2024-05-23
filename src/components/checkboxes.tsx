@@ -19,6 +19,35 @@ export const Checkboxes = () => {
   const populations = useContext(PopulationContext)
   const setPopulation = useContext(SetPopulationContext)
 
+  /** チェックボックスのチェックを変更する */
+  const handleIsChecked = (checkedPref: Prefecture) => {
+    const newPrefectures = prefectures.map((prefecture) => {
+      if (prefecture.prefCode === checkedPref.prefCode) {
+        return {
+          ...prefecture,
+          isChecked: !prefecture.isChecked,
+        }
+      }
+      return prefecture
+    })
+    setPrefectures(newPrefectures)
+  }
+
+  /** チェックボタンを押した時の処理全体 */
+  const handleChanged = (prefecture: Prefecture) => {
+    handleIsChecked(prefecture)
+    if (prefecture.isChecked) {
+      const deletePrefecture = populations.findIndex(
+        (population) => population.name === prefecture.prefName
+      )
+      if (deletePrefecture !== -1) {
+        const newPopulations = [...populations]
+        newPopulations.splice(deletePrefecture, 1)
+        setPopulation(newPopulations)
+      }
+    }
+  }
+
   /** ラベルと一致したデータをフェッチする  */
   useEffect(() => {
     const fetchPopulationData = async () => {
@@ -40,7 +69,7 @@ export const Checkboxes = () => {
           }
           newPopulations.push(newPopulation)
         } catch (error) {
-          alert('チェックされた県のデータ取得に失敗しました')
+          alert('チェックされた県の人口データ取得に失敗しました')
         }
       }
       setPopulation(newPopulations)
@@ -48,37 +77,6 @@ export const Checkboxes = () => {
     fetchPopulationData()
   }, [prefectures])
 
-  /** チェックボックスのチェックを変更する */
-  const handleIsChecked = (checkedPref: Prefecture) => {
-    const newPrefectures = prefectures.map((prefecture) => {
-      if (prefecture.prefCode === checkedPref.prefCode) {
-        return {
-          ...prefecture,
-          isChecked: !prefecture.isChecked,
-        }
-      }
-      return prefecture
-    })
-    setPrefectures(newPrefectures)
-  }
-
-  /** チェックボタンを押した時の処理全体 */
-  const handleChanged = (prefecture: Prefecture) => {
-    if (!prefecture.isChecked) {
-      handleIsChecked(prefecture)
-    } else {
-      handleIsChecked(prefecture)
-      /** チェックを外す処理 */
-      const deletePrefecture = populations.findIndex(
-        (population) => population.name === prefecture.prefName
-      )
-      if (deletePrefecture === -1) {
-        return
-      }
-      populations.splice(deletePrefecture, 1)
-      setPopulation([...populations])
-    }
-  }
   return (
     <div className="checkbox">
       {prefectures.map((prefecture) => (

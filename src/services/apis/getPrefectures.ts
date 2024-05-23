@@ -19,6 +19,5 @@ export const getPrefectures = async () => {
     return data
   } catch (error) {
     alert('データの取得に失敗しました')
-    throw error
   }
 }
