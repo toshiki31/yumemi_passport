@@ -1,52 +1,17 @@
 import React from 'react'
 import { useEffect, useContext } from 'react'
 import { LabelContext } from '../contexts/labelContext'
-import {
-  PrefecturesContext,
-  SetPrefecturesContext,
-} from '../contexts/prefectureContext'
-import {
-  PopulationContext,
-  SetPopulationContext,
-} from '../contexts/populationContext'
+import { PrefecturesContext } from '../contexts/prefectureContext'
+import { SetPopulationContext } from '../contexts/populationContext'
 import { getPopulation } from '../services/apis/getPopulation'
-import { Prefecture, Population } from '../models/model'
+import { Population } from '../models/model'
+import { useHandleChanged } from '../hooks/useCheckboxes'
 
 export const Checkboxes = () => {
   const label = useContext(LabelContext)
   const prefectures = useContext(PrefecturesContext)
-  const setPrefectures = useContext(SetPrefecturesContext)
-  const populations = useContext(PopulationContext)
   const setPopulation = useContext(SetPopulationContext)
-
-  /** チェックボックスのチェックを変更する */
-  const handleIsChecked = (checkedPref: Prefecture) => {
-    const newPrefectures = prefectures.map((prefecture) => {
-      if (prefecture.prefCode === checkedPref.prefCode) {
-        return {
-          ...prefecture,
-          isChecked: !prefecture.isChecked,
-        }
-      }
-      return prefecture
-    })
-    setPrefectures(newPrefectures)
-  }
-
-  /** チェックボタンを押した時の処理全体 */
-  const handleChanged = (prefecture: Prefecture) => {
-    handleIsChecked(prefecture)
-    if (prefecture.isChecked) {
-      const deletePrefecture = populations.findIndex(
-        (population) => population.name === prefecture.prefName
-      )
-      if (deletePrefecture !== -1) {
-        const newPopulations = [...populations]
-        newPopulations.splice(deletePrefecture, 1)
-        setPopulation(newPopulations)
-      }
-    }
-  }
+  const handleChanged = useHandleChanged()
 
   /** ラベルと一致したデータをフェッチする  */
   useEffect(() => {
@@ -95,3 +60,5 @@ export const Checkboxes = () => {
     </div>
   )
 }
+
+export default Checkboxes

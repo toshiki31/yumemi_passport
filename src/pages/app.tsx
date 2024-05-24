@@ -31,7 +31,6 @@ export default function App() {
               isChecked: false,
             })
           )
-          console.log(initialPrefectures)
           setPrefectures(initialPrefectures)
         } else {
           throw new Error('Invalid data format')

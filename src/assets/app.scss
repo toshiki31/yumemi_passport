@@ -3,11 +3,8 @@
   --black: #1a1a1a;
   --white: #ffffff;
   --border: #ccc;
-  --error: #f4441d;
   --primary: #40a578;
   --secondary: #9dde8b;
-  --dark: #006769;
-  --light: #e6ff94;
   --font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
   --md: 16px;
   --sm: 12px;
@@ -171,6 +168,10 @@ input[type='checkbox']:checked + .custom_checkbox::after {
   display: inline-grid;
   position: relative;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
 }
 .loader::before,
 .loader::after {
@@ -186,12 +187,18 @@ input[type='checkbox']:checked + .custom_checkbox::after {
   background-size: 24px 24px;
   background-repeat: no-repeat;
   animation: s3 1s infinite;
+  @media screen and (max-width: 768px) {
+    background-size: 12px 12px;
+  }
 }
 .loader::before {
   margin: 4px;
   color: var(--secondary);
   background-size: 16px 16px;
   animation-timing-function: linear;
+  @media screen and (max-width: 768px) {
+    background-size: 8px 8px;
+  }
 }
 @keyframes s3 {
   100% {
